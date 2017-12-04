@@ -1,0 +1,88 @@
+<div id="news-list" *ngIf="mode === NewsMode.list">
+  <h4>
+    Сообщения новостей
+    <a href="javascript:void(0)" class="create_news text-success" routerLink="/news/create"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</a>
+  </h4>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Включено</th>
+        <th scope="col">Дата</th>
+        <th scope="col">Заголовок</th>
+        <th scope="col" class="text-center">Корректировка</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let n of news" [ngClass]="{'table-danger' : !n.enabled}">
+        <th scope="row">
+          <a *ngIf="n.enabled" href="javascript:void(0)" (click)="setEnabled(n.id, false)" title="Отключить"><i class="fa fa-check-square-o fa-lg text-success" aria-hidden="true"></i></a>
+          <a *ngIf="!n.enabled" href="javascript:void(0)" (click)="setEnabled(n.id, true)" title="Включить"><i class="fa fa-square-o fa-lg text-danger" aria-hidden="true"></i></a>
+        </th>
+        <th>{{n.date}}</th>
+        <td>{{n.subject}}</td>
+        <td class="text-center">
+          <a href="javascript:void(0)" class="text-info" (click)="revealNews(n.id)" title="Смотреть"><i class="fa fa-lg fa-eye" aria-hidden="true"></i></a>
+          <a href="javascript:void(0)" class="text-success" routerLink="/news/modify/{{n.id}}" title="Редактировать"><i class="fa fa-lg fa-file-text" aria-hidden="true"></i></a>
+          <a href="javascript:void(0)" class="text-danger" (click)="removeNews(n.id)" title="Удалить"><i class="fa fa-lg fa-times" aria-hidden="true"></i></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="news-preview-panel" *ngIf="isRevealed" (click)="vanishNews()">
+    <div class="card news-preview-card" (click)="onPreviewClick($event)">
+      <div class="card-header text-white bg-info">
+        <i class="fa fa-file-text" aria-hidden="true"></i> {{ newsData.subject }}
+        <a href="javascript:void(0)" (click)="vanishNews()" title="Закрыть">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="card-body__news-date" [textContent]="newsData.date"></div>
+        <div class="card-body__news-message" [innerHtml]="newsData.message|nl2br"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="news-edit" *ngIf="[NewsMode.create, NewsMode.modify].indexOf(mode) !== -1">
+  <div class="card news-card">
+    <div class="card-header text-white bg-success">
+      <i class="fa fa-file-text" aria-hidden="true"></i> {{ mode === NewsMode.create ? 'Создание новости' : 'Редактирование новости' }}
+    </div>
+    <div class="card-body">
+      <form autocomplete="off">
+        <div class="form-group row">
+          <label for="newsDate" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label">Дата</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" id="newsDate" name="newsDate" class="form-control-plaintext" readonly [(ngModel)]="newsData.date" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="newsSubject" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Заголовок</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" id="newsSubject" name="newsSubject" class="form-control" placeholder="Введите заголовок новости" [(ngModel)]="newsData.subject" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="newsMessage" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Текст сообщения</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <textarea rows="8" id="newsMessage" name="newsMessage" class="form-control" placeholder="Введите текст сообщения новости" [(ngModel)]="newsData.message"></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="newsEnabled" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Включено</label>
+          <div class="form-check col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <label class="form-check-label">
+              <input type="checkbox" name="newsEnabled" class="form-check-input" [(ngModel)]="newsData.enabled" />
+            </label>
+          </div>
+        </div>
+        <div class="form-group row buttons-row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+            <button type="button" class="btn btn-success buttons-row__button" (click)="saveNews()">{{ mode === NewsMode.create ? 'Добавить' : 'Сохранить' }}</button>
+            <button type="button" class="btn btn-secondary buttons-row__button" (click)="cancelSave()">Отмена</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

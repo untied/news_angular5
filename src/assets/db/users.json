@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "login": "admin",
+    "passw": "admin",
+    "name": "Админов Иван Иванович",
+    "email": "adminov@example.com",
+    "enabled": true
+  },
+  {
+    "id": 2,
+    "login": "guest",
+    "passw": "guest",
+    "name": "Гостевой Пётр Петрович",
+    "email": "gostevoy@example.com",
+    "enabled": false
+  }
+]

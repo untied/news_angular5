@@ -1,0 +1,26 @@
+<!-- <div>
+  <h1>Login works!</h1>
+  Current state is: {{auth}}
+</div> -->
+<div id="login">
+  <div class="card login-card">
+    <div class="card-header text-white bg-success">
+      <i class="fa fa-lock" aria-hidden="true"></i> Авторизация
+    </div>
+    <div class="card-body">
+      <form autocomplete="off">
+        <small class="text-danger" [style.visibility]="errors.login ? 'visible' : 'hidden'">
+          <strong>Пожалуйста, укажите логин</strong>
+        </small>
+        <input type="text" name="login" class="form-control" placeholder="Логин" [(ngModel)]="login" [ngClass]="{'is-invalid' : errors.login}" />
+        <small class="text-danger" [style.visibility]="errors.passw ? 'visible' : 'hidden'">
+          <strong>Пожалуйста, укажите пароль</strong>
+        </small>
+        <input type="password" name="passw" class="form-control" placeholder="Пароль" [(ngModel)]="passw" [ngClass]="{'is-invalid' : errors.passw}" />
+        <div class="form-button text-center">
+          <button type="button" class="btn btn-primary" (click)="signIn()">Вход</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

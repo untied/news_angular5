@@ -1,0 +1,89 @@
+<div id="users-list" *ngIf="mode === UsersMode.list">
+  <h4>
+    Пользователи системы
+    <a href="javascript:void(0)" class="create_user text-success" routerLink="/users/create"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</a>
+  </h4>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Включён</th>
+        <th scope="col">Логин</th>
+        <th scope="col">Фамилия Имя Отчество</th>
+        <th scope="col">Email</th>
+        <th scope="col" class="text-center">Корректировка</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users" [ngClass]="{'table-danger' : !u.enabled}">
+        <th scope="row">
+          <i *ngIf="u.id === cuserId" class="fa fa-check-square-o fa-lg text-secondary" aria-hidden="true"></i>
+          <a *ngIf="u.enabled && u.id !== cuserId" href="javascript:void(0)" (click)="setEnabled(u.id, false)" title="Отключить"><i class="fa fa-check-square-o fa-lg text-success" aria-hidden="true"></i></a>
+          <a *ngIf="!u.enabled && u.id !== cuserId" href="javascript:void(0)" (click)="setEnabled(u.id, true)" title="Включить"><i class="fa fa-square-o fa-lg text-danger" aria-hidden="true"></i></a>
+        </th>
+        <th>{{u.login}}</th>
+        <td>{{u.name}}</td>
+        <td>{{u.email}}</td>
+        <td class="text-center">
+          <a href="javascript:void(0)" class="text-success" routerLink="/users/modify/{{u.id}}" title="Редактировать"><i class="fa fa-lg fa-file-text" aria-hidden="true"></i></a>
+          <a *ngIf="u.id !== cuserId" href="javascript:void(0)" class="text-danger" (click)="removeUser(u.id)" title="Удалить"><i class="fa fa-lg fa-times" aria-hidden="true"></i></a>
+          <i *ngIf="u.id === cuserId" class="fa fa-lg fa-times text-secondary" aria-hidden="true"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div id="users-edit" *ngIf="[UsersMode.create, UsersMode.modify].indexOf(mode) !== -1">
+  <div class="card user-card">
+    <div class="card-header text-white bg-success">
+      <i class="fa fa-user" aria-hidden="true"></i> {{ mode === UsersMode.create ? 'Создание пользователя' : 'Редактирование пользователя' }}
+    </div>
+    <div class="card-body">
+      <form autocomplete="off">
+        <div class="form-group row">
+          <label for="userLogin" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Логин</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" id="userLogin" name="userLogin" class="form-control" placeholder="Введите логин пользователя" [(ngModel)]="userData.login" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="userPassw" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label" [ngClass]="{obligatory: mode === UsersMode.create}">Пароль</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="password" id="userPassw" name="userPassw" class="form-control" placeholder="Введите пароль пользователя" [(ngModel)]="userData.passw" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="userPassw2" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label" [ngClass]="{obligatory: mode === UsersMode.create}">Пароль (еще раз)</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="password" id="userPassw2" name="userPassw2" class="form-control" placeholder="Введите пароль пользователя повторно" [(ngModel)]="userData.passw2" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="userName" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Фамилия Имя Отчество</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="text" id="userName" name="userName" class="form-control" placeholder="Введите ФИО пользователя" [(ngModel)]="userData.name" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="userEmail" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Email</label>
+          <div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <input type="email" id="userEmail" name="userEmail" class="form-control" placeholder="Введите email пользователя" [(ngModel)]="userData.email" />
+          </div>
+        </div>
+        <div class="form-group row" [hidden]="userData.id === cuserId">
+          <label for="userEnabled" class="col-xs-6 col-sm-6 col-md-3 col-lg-3 col-xl-3 col-form-label obligatory">Включён</label>
+          <div class="form-check col-xs-6 col-sm-6 col-md-9 col-lg-9 col-xl-9">
+            <label class="form-check-label">
+              <input type="checkbox" name="userEnabled" class="form-check-input" [(ngModel)]="userData.enabled" />
+            </label>
+          </div>
+        </div>
+        <div class="form-group row buttons-row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+            <button type="button" class="btn btn-success buttons-row__button" (click)="saveUser()">{{ mode === UsersMode.create ? 'Добавить' : 'Сохранить' }}</button>
+            <button type="button" class="btn btn-secondary buttons-row__button" (click)="cancelSave()">Отмена</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

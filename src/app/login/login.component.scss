@@ -1,0 +1,24 @@
+#login {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-card {
+    width: 300px;
+    height: 280px;
+    background-color: #f5f5f5;
+  }
+
+  form {
+    margin-top: -10px;
+
+    .form-button {
+      margin-top: 30px;
+    }
+  }
+}

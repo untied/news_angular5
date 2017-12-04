@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~font-awesome/css/font-awesome.min.css";
+
+body {
+  padding-top: 70px;
+  padding-bottom: 60px;
+
+  form {
+    button {
+      min-width: 120px;
+      cursor: pointer;
+    }
+  
+    textarea {
+      resize: none;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    label.obligatory:after {
+      content: ' \2605';
+      display: 'inline';
+      color: #f30;
+    }
+
+    .form-check-input {
+      display: inline-block;
+      margin-top: -5px;
+    }
+
+    .buttons-row {
+      margin-top: 30px;
+    }
+  }
+}
