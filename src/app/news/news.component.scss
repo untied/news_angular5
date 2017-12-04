@@ -6,12 +6,6 @@
     margin: 5px 5px 0 0;
   } 
 
-  .news-card {
-    width: 70%;
-    margin: 0 auto;
-    background-color: #f5f5f5;
-  }
-
   .news-preview-panel {
     display: flex;
     align-items: center;
@@ -52,5 +46,13 @@
         }
       }
     }
+  }
+}
+
+#news-edit {
+  .news-card {
+    width: 70%;
+    margin: 0 auto;
+    background-color: #f5f5f5;
   }
 }

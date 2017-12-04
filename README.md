@@ -1,6 +1,6 @@
 # NewsAngular5
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.5.
+A sample news management system made with Angular 5
 
 ## Development server
 
