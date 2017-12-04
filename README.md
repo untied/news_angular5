@@ -1,6 +1,6 @@
 # NewsAngular5
 
-A sample news management system made with Angular 5.
+A sample news management system made with Angular 5.  
 Use `admin` as login and password to sign in.
 
 ## Development server
